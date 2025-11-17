@@ -12,7 +12,7 @@ RUN go mod download
 #static binary(c dependenies disabled), ensure linux executable ,building main go file and tagging with name = gatus
 RUN CGO_ENABLED=0 GOOS=linux go build -o gatus main.go
 
-FROM alpine:3.7
+FROM scratch
 
 WORKDIR /app
 
