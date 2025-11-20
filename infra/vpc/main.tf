@@ -27,3 +27,9 @@ resource "aws_subnet" "priv2" {
 resource "aws_route_table" "public"{
     vpc_id = var.vpc_id
 }
+resource "aws_route_table" "private-1"{
+    vpc_id = var.vpc_id
+}
+resource "aws_route_table" "private-2"{
+    vpc_id = var.vpc_id
+}

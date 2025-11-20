@@ -1,11 +1,8 @@
 FROM golang:1.25-alpine AS build
 
 WORKDIR /app
-#install git
-RUN apk add --no-cache git
 
-#clone gatus repo
-RUN git clone https://github.com/TwiN/gatus.git .
+COPY . .
 
 RUN go mod download 
 
@@ -18,12 +15,16 @@ WORKDIR /app
 
 COPY --from=build /app/gatus .
 
-COPY --from=build  --chmod=644 /app/config.yaml .
+COPY --from=build  /app/config.yaml ./config.yaml
 
 EXPOSE 8080
 
 # path to config.yaml must be stated in in this env
 ENV GATUS_CONFIG_PATH=/app/config.yaml
+
+RUN adduser -D -g '' nonroot
+
+USER nonroot
 
 ENTRYPOINT [ "./gatus" ]
 
