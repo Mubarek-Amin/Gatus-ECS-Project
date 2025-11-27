@@ -22,10 +22,6 @@ EXPOSE 8080
 # path to config.yaml must be stated in in this env
 ENV GATUS_CONFIG_PATH=/app/config.yaml
 
-RUN adduser -D -g '' nonroot
-
-USER nonroot
-
 ENTRYPOINT [ "./gatus" ]
 
 CMD ["-config", "/app/config.yaml"]

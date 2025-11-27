@@ -1,9 +1,14 @@
-variable "vpc_id"{
-    type = string
-    default = vpc-0ae5d80105637fb09
+
+variable "public_cidrs"{
+  default   = ["10.0.1.0/24", "10.0.2.0/24"]
+
 }
 
-variable "vpc_cidr_block"{
-    type = string
-    default = "10.0.0.0/16"
+variable "private_cidrs"{
+ default = ["10.0.3.0/26", "10.0.4.0/26"]
 }
+
+variable "azs"{  
+ default  = ["eu-north-1a", "eu-north-1b"]
+}
+
