@@ -8,7 +8,7 @@ variable "target_group_arn" {
   
 }
 
-variable "ecs_service_sg_id"{
+variable "ecs_sg_id"{
     description = "security group for alb"
     type = string
 }

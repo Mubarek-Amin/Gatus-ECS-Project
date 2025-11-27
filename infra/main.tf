@@ -7,14 +7,14 @@ module "ecs"{
     source = "./ecs"
     private_subnet_ids = module.vpc.private_subnet_ids
     target_group_arn = module.alb.gatus_alb_target_group_arn
-    ecs_service_sg_id = module.security_groups.ecs_service_sg_id
+    ecs_sg_id = module.security_groups.ecs_sg_id
     gatus_image = "${module.ecr.gatus_repo_url}"
 }
 module "alb"{
     source = "./alb"
     vpc_id = module.vpc.vpc_id
     public_subnet_ids = module.vpc.public_subnet_ids
-    gatus_alb_sg_id = module.security_groups.alb_sg_id
+    alb_sg_id = module.security_groups.alb_sg_id
     certificate_arn = module.acm.certificate_arn
 }
 module "security_groups" {

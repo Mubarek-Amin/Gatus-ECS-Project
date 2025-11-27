@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "gatus-task" {
     container_definitions = jsonencode([
   {
     name  = "gatus"
-    image = var.gatus_image
+    image = "${var.gatus_image}:v1.3"
 
     portMappings = [{
       containerPort = 8080
@@ -55,7 +55,7 @@ resource "aws_ecs_service" "gatus-service" {
     network_configuration {
       assign_public_ip = false
       subnets = var.private_subnet_ids
-      security_groups = [var.ecs_service_sg_id]
+      security_groups = [var.ecs_sg_id]
     }
 
     deployment_circuit_breaker {

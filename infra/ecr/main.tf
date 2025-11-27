@@ -8,9 +8,21 @@ resource "aws_ecr_repository" "gatus_repo" {
     }
 }
 
-resource "aws_ecr_repository_policy" "repo_policy" {
-  repository = aws_ecr_repository.gatus_repo.id
+resource "aws_ecr_lifecycle_policy" "repo_policy" {
+  repository = aws_ecr_repository.gatus_repo.name
+
   policy = jsonencode({
-    version = "200"
+    rules = [{
+      rulePriority = 1
+      description  = "Expire old images"
+      selection = {
+        tagStatus = "any"
+        countType = "imageCountMoreThan"
+        countNumber = 10
+      }
+      action = {
+        type = "expire"
+      }
+    }]
   })
 }

@@ -10,7 +10,7 @@ variable "public_subnet_ids" {
   
 }
 
-variable "gatus_alb_sg_id" {
+variable "alb_sg_id" {
   type = string
 }
 
