@@ -9,6 +9,7 @@ module "ecs"{
     target_group_arn = module.alb.gatus_alb_target_group_arn
     ecs_sg_id = module.security_groups.ecs_sg_id
     gatus_image = "${module.ecr.gatus_repo_url}"
+    execution_role_arn = module.iam.ecs_task_execution_arn
 }
 module "alb"{
     source = "./alb"
@@ -18,9 +19,9 @@ module "alb"{
     certificate_arn = module.acm.certificate_arn
 }
 module "security_groups" {
-  source = "./security_groups"
-  vpc_id = module.vpc.vpc_id
-  vpc_cidr_block = module.vpc.vpc_cidr_block
+    source = "./security_groups"
+    vpc_id = module.vpc.vpc_id
+    vpc_cidr_block = module.vpc.vpc_cidr_block
 }
 module "acm"{
     source = "./acm"
@@ -32,4 +33,7 @@ module "route53"{
 }
 module "ecr"{
     source = "./ecr"
+}
+module "iam" {
+    source = "./iam"
 }

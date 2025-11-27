@@ -15,6 +15,7 @@ resource "aws_ecs_task_definition" "gatus-task" {
     network_mode = "awsvpc"
     cpu = "256"
     memory = "512"
+    execution_role_arn = var.execution_role_arn
     container_definitions = jsonencode([
   {
     name  = "gatus"
@@ -45,6 +46,10 @@ resource "aws_ecs_service" "gatus-service" {
     task_definition = aws_ecs_task_definition.gatus-task.arn
     desired_count = 2
     launch_type = "FARGATE"
+    platform_version = "LATEST"
+    propagate_tags   = "SERVICE"
+
+    health_check_grace_period_seconds = 60
 
     load_balancer {
       target_group_arn = var.target_group_arn

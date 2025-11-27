@@ -21,3 +21,7 @@ variable "region" {
     default = "eu-north-1"
   
 }
+variable "execution_role_arn" {
+    type = string
+  
+}
