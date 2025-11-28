@@ -1,3 +1,4 @@
 infra/.terraform/
 *.tfstate
 *.hcl
+*.tfvars
