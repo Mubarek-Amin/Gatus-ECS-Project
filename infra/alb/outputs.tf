@@ -18,6 +18,3 @@ output "https_listener_arn" {
   value = aws_lb_listener.HTTPS.arn
 }
 
-output "target_group_arn" {
-  value = aws_lb_target_group.target_app.arn
-}
