@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "gatus-task" {
     container_definitions = jsonencode([
   {
     name  = "gatus"
-    image = "${var.gatus_image}:v1.3"
+    image = "${var.gatus_image}:${var.image_tag}"
 
     portMappings = [{
       containerPort = 8080

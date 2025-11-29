@@ -12,4 +12,44 @@ jobs:
 
             - name: Lint Go Code
               uses: golangci/golangci-lint-action@v9
+              with:
+                args: --concurrency 4 #split across 4 for faster linting
+
+            - name: Cache Terraform modules
+              uses: actions/cache@v3
+              with:
+                path: |
+                  infra/.terraform
+                  infra/.terraform.lock.hcl
+                key: terraform-${{ hashFiles('infra/*.tf*') }}-${{ runner.os }} #Caches all tf files in infra. code change --> new hash key --> new cache key.
+                
+            - name: Terraform Format & Validate
+              run: |
+                cd infra
+                terraform fmt -check -recursive
+                terraform init -backend=false
+                terraform validate
+
+
+
+            - name: Build Docker image
+              uses: docker/build-push-action@v6.18.0
+              with:
+                context: ./app
+                file: ./app/Dockerfile
+                push: false
+                load: true
+                tags: local/gatus_ecs:ci
+                cache-from: type=local,ref=local/gatus_ecs:ci
+                cache-to: type=local,ref=local/gatus_ecs:ci,mode=max
+
+            - name: Scan Image
+              uses: aquasecurity/trivy-action@0.33.1
+              with:
+                image-ref: local/gatus_ecs:ci
+                exit-code: 1
+                severity: 'CRITICAL,HIGH'
+
+
+
 

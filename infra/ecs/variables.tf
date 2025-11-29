@@ -17,6 +17,11 @@ variable "gatus_image" {
   type = string
 }
 
+variable "image_tag" {
+    default = "latest"
+  
+}
+
 variable "region" {
     default = "eu-north-1"
   
