@@ -1,10 +1,10 @@
 variable "terraform_state_bucket" {
-    default = "tf-state-gatus"
-  
+  default = "tf-state-gatus"
+
 }
 variable "region" {
-    default = "eu-north-1"
-  
+  default = "eu-north-1"
+
 }
 
 variable "dynamodb_table_name" {

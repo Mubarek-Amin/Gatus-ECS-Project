@@ -1,6 +1,6 @@
 output "gatus_alb_target_group_arn" {
-    value = aws_lb_target_group.gatus_alb_tg.arn
-  
+  value = aws_lb_target_group.gatus_alb_tg.arn
+
 }
 output "alb_dns_name" {
   value = aws_lb.gatus_alb.dns_name

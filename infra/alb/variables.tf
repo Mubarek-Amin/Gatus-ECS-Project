@@ -1,13 +1,13 @@
 variable "vpc_id" {
-    
+
   description = "vpc_id"
-  type = string
+  type        = string
 }
 
 variable "public_subnet_ids" {
 
   type = list(string)
-  
+
 }
 
 variable "alb_sg_id" {
@@ -16,5 +16,5 @@ variable "alb_sg_id" {
 
 variable "certificate_arn" {
   type = string
-  
+
 }

@@ -1,11 +1,11 @@
 resource "aws_ecr_repository" "gatus_repo" {
-    name = "gatus_repo"
-    
-    image_tag_mutability = "MUTABLE"
+  name = "gatus_repo"
 
-    image_scanning_configuration {
-      scan_on_push = true
-    }
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
 }
 
 resource "aws_ecr_lifecycle_policy" "repo_policy" {
@@ -16,8 +16,8 @@ resource "aws_ecr_lifecycle_policy" "repo_policy" {
       rulePriority = 1
       description  = "Expire old images"
       selection = {
-        tagStatus = "any"
-        countType = "imageCountMoreThan"
+        tagStatus   = "any"
+        countType   = "imageCountMoreThan"
         countNumber = 10
       }
       action = {

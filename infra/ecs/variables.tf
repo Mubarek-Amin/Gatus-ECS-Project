@@ -1,16 +1,16 @@
 variable "private_subnet_ids" {
-    type = list(string)
+  type = list(string)
 }
 
 variable "target_group_arn" {
-    description = "target group arn for gatus-alb"
-    type = string
-  
+  description = "target group arn for gatus-alb"
+  type        = string
+
 }
 
-variable "ecs_sg_id"{
-    description = "security group for alb"
-    type = string
+variable "ecs_sg_id" {
+  description = "security group for alb"
+  type        = string
 }
 
 variable "gatus_image" {
@@ -18,15 +18,15 @@ variable "gatus_image" {
 }
 
 variable "image_tag" {
-    default = "latest"
-  
+  default = "latest"
+
 }
 
 variable "region" {
-    default = "eu-north-1"
-  
+  default = "eu-north-1"
+
 }
 variable "execution_role_arn" {
-    type = string
-  
+  type = string
+
 }
