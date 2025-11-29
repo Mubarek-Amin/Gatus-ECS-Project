@@ -26,6 +26,7 @@ resource "aws_dynamodb_table" "tf_lock" {
   name         = "state-lock"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
+  region = "eu-north-1"
   attribute {
     name = "LockID"
     type = "S"
