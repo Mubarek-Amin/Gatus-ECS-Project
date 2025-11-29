@@ -24,7 +24,7 @@ jobs:
             - name: Terraform plan & apply
               run: |
                 IMAGE_TAG=latest
-                cd ../infra
+                cd infra
                 terraform init
                 terraform plan -var="gatus_image_tag=$IMAGE_TAG"
                 terraform apply -var="gatus_image_tag=$IMAGE_TAG" -auto-approve

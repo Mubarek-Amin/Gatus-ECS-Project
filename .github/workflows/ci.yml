@@ -39,8 +39,6 @@ jobs:
                 push: false
                 load: true
                 tags: local/gatus_ecs:ci
-                cache-from: type=gha
-                cache-to: type=gha,mode=max
 
             - name: Scan Image
               uses: aquasecurity/trivy-action@0.33.1
