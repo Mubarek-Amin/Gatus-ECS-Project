@@ -1,0 +1,11 @@
+name: CD
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: [ubuntu-latest]
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v6.0.0
+              
