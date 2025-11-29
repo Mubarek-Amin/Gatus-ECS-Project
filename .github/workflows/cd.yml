@@ -20,15 +20,7 @@ jobs:
               uses: aws-actions/amazon-ecr-login@v2                
                 
 
-            - name: Build, tag, and push docker image to Amazon ECR
-              run: |
-                REGISTRY=${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.eu-north-1.amazonaws.com
-                REPOSITORY=${{secrets.ECR_REPO}}
-                IMAGE_TAG=latest
-                cd app
-                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
+              
             - name: Terraform plan & apply
               run: |
                 IMAGE_TAG=latest
@@ -37,6 +29,14 @@ jobs:
                 terraform plan -var="gatus_image_tag=$IMAGE_TAG"
                 terraform apply -var="gatus_image_tag=$IMAGE_TAG" -auto-approve
 
-
+            - name: Build, tag, and push docker image to Amazon ECR
+              run: |
+                REGISTRY=${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.eu-north-1.amazonaws.com
+                REPOSITORY=${{secrets.ECR_REPO}}
+                IMAGE_TAG=latest
+                cd app
+                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+              
              
                     
