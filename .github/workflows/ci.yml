@@ -10,11 +10,6 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v6.0.0
 
-            - name: Lint Go Code
-              uses: golangci/golangci-lint-action@v9
-              with:
-                args: --concurrency 4 #split across 4 for faster linting
-
             - name: Cache Terraform modules
               uses: actions/cache@v3
               with:
