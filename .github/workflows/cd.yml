@@ -7,8 +7,7 @@ on:
       - completed
         
   workflow_dispatch:
-env:
-  TF_VAR_gatus_image_tag: ${{github.sha}}
+
 permissions:
   id-token: write
   contents: read
@@ -34,8 +33,10 @@ jobs:
               run: | #plan and apply with image tag
                 cd infra
                 terraform init
-                terraform plan -var="gatus_image_tag=${GITHUB_SHA}"
-                terraform apply -auto-approve -var="gatus_image_tag=${GITHUB_SHA}"
+                terraform plan 
+                terraform apply -auto-approve 
+              env:
+                TF_VAR_gatus_image_tag: ${{github.sha}}
 
             
           
