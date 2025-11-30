@@ -4,8 +4,13 @@ on:
   push:
     branches:
       - main
-        
+       
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  
 env:
   DOCKER_BUILDKIT: 1
 jobs:
