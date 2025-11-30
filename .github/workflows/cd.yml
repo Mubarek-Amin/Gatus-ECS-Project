@@ -1,9 +1,10 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["ci"]      
+    types:
+      - completed
         
   workflow_dispatch:
 
@@ -25,11 +26,18 @@ jobs:
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
-                role-to-assume: arn:aws:iam::304035489951:role/gatus_ecs_oidc_role
+                role-to-assume: arn:aws:iam::304035489951:role/gatus_ecs_oidc_role #oidc authentication
                 aws-region: eu-north-1
 
             - name: Login to Amazon ECR
-              uses: aws-actions/amazon-ecr-login@v2           
+              uses: aws-actions/amazon-ecr-login@v2     
+              
+            - name: Create Bootstrap ecr repo  #ecr needs to exist before building and pushing
+              run: |
+                cd infra
+                terraform init
+                terraform apply -target=aws_ecr_repository.gatus -auto-approve
+
               
               
               
@@ -37,7 +45,7 @@ jobs:
               run: |
                 REGISTRY=304035489951.dkr.ecr.eu-north-1.amazonaws.com
                 REPOSITORY=${{secrets.ECR_REPO}}
-                IMAGE_TAG=${GITHUB_SHA}
+                IMAGE_TAG=${GITHUB_SHA} 
                 cd app
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
                 docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -45,11 +53,11 @@ jobs:
                 
                 
             - name: Write Terraform variables
-              run: |
+              run: | #github sha = commit id
                 echo "gatus_image_tag = \"${GITHUB_SHA}\"" > infra/terraform.tfvars
               
             - name: Terraform plan & apply
-              run: |
+              run: | # 
                 cd infra
                 terraform init
                 terraform plan -var-file="terraform.tfvars"
