@@ -1,5 +1,6 @@
 resource "aws_ecr_repository" "gatus_repo" {
-  name = "gatus_repo"
+  name         = "gatus_repo"
+  force_delete = true
 
   image_tag_mutability = "MUTABLE"
 

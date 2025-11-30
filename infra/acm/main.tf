@@ -1,6 +1,7 @@
 resource "aws_acm_certificate" "acm_cert" {
-  domain_name       = "amin-mubarek.com"
-  validation_method = "DNS"
+  domain_name               = "amin-mubarek.com"
+  subject_alternative_names = "tm.amin-mubarek.com"
+  validation_method         = "DNS"
 
 
   lifecycle {
