@@ -52,6 +52,16 @@ jobs:
                 exit-code: 1
                 severity: 'CRITICAL,HIGH'
 
+            - name: Build, tag, and push docker image to Amazon ECR #create ecr repo before building and pushing
+              run: |
+                aws ecr create-repository --repository-name ${{secrets.ECR_REPO}} --region eu-north-1 || true
+                REGISTRY=304035489951.dkr.ecr.eu-north-1.amazonaws.com
+                REPOSITORY=${{secrets.ECR_REPO}}
+                IMAGE_TAG=${GITHUB_SHA} 
+                cd app
+                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
 
 
 

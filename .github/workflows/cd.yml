@@ -30,34 +30,15 @@ jobs:
                 aws-region: eu-north-1
 
             - name: Login to Amazon ECR
-              uses: aws-actions/amazon-ecr-login@v2     
-              
-            - name: Create Bootstrap ecr repo  #ecr needs to exist before building and pushing
-              run: |
-                cd infra
-                terraform init
-                terraform apply -target=aws_ecr_repository.gatus -auto-approve
-
-              
-              
-              
-            - name: Build, tag, and push docker image to Amazon ECR
-              run: |
-                REGISTRY=304035489951.dkr.ecr.eu-north-1.amazonaws.com
-                REPOSITORY=${{secrets.ECR_REPO}}
-                IMAGE_TAG=${GITHUB_SHA} 
-                cd app
-                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-                
-                
+              uses: aws-actions/amazon-ecr-login@v2    
                 
             - name: Write Terraform variables
               run: | #github sha = commit id
+                cd infra
                 echo "gatus_image_tag = \"${GITHUB_SHA}\"" > infra/terraform.tfvars
               
             - name: Terraform plan & apply
-              run: | # 
+              run: | #plan and apply with image tag
                 cd infra
                 terraform init
                 terraform plan -var-file="terraform.tfvars"
