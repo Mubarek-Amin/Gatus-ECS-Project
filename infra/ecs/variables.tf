@@ -17,8 +17,8 @@ variable "gatus_image" {
   type = string
 }
 
-variable "image_tag" {
-  default = "latest"
+variable "gatus_image_tag" {
+  type = string
 
 }
 
