@@ -10,7 +10,7 @@ on:
 permissions:
   id-token: write
   contents: read
-  
+
 env:
   DOCKER_BUILDKIT: 1
 jobs:
@@ -38,6 +38,9 @@ jobs:
                   infra/.terraform.lock.hcl
                 key: terraform-${{ hashFiles('infra/*.tf*') }}-${{ runner.os }} #Caches all tf files in infra. code change --> new hash key --> new cache key.
                 
+            - name: Login to Amazon ECR
+              uses: aws-actions/amazon-ecr-login@v2 
+              
             - name: Terraform Format & Validate
               run: |
                 cd infra
