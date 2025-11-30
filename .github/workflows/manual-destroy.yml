@@ -1,0 +1,40 @@
+name: Manual Destroy Non-Vital Resources
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.0
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::304035489951:role/gatus_ecs_oidc_role
+          aws-region: eu-north-1
+
+      - name: Terraform init
+        run: cd infra && terraform init
+
+      - name: Destroy all except vital
+        run: |
+          cd infra
+          terraform destroy \
+            -target=module.ecs \
+            -target=module.alb \
+            -target=module.vpc \
+            -target=module.acm \
+            -target=module.iam \
+            -target=module.route53 \
+            -target=module.security_groups \
+            -auto-approve
