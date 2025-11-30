@@ -10,6 +10,7 @@ module "ecs" {
   ecs_sg_id          = module.security_groups.ecs_sg_id
   gatus_image        = module.ecr.gatus_repo_url
   execution_role_arn = module.iam.ecs_task_execution_arn
+  gatus_image_tag    = var.gatus_image_tag
 }
 module "alb" {
   source            = "./alb"
