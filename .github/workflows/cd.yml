@@ -29,18 +29,13 @@ jobs:
               with:
                 role-to-assume: arn:aws:iam::304035489951:role/gatus_ecs_oidc_role #oidc authentication
                 aws-region: eu-north-1   
-                
-            - name: Write Terraform variables
-              run: | #github sha = commit id
-                cd infra
-                echo "gatus_image_tag = \"${GITHUB_SHA}\"" > infra/terraform.tfvars
               
             - name: Terraform plan & apply
               run: | #plan and apply with image tag
                 cd infra
                 terraform init
-                terraform plan 
-                terraform apply  -auto-approve 
+                terraform plan -var="gatus_image_tag=${GITHUB_SHA}"
+                terraform apply -auto-approve -var="gatus_image_tag=${GITHUB_SHA}"
 
             
           
