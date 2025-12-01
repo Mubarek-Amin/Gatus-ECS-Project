@@ -26,7 +26,9 @@ Key features:
 ---
 
 ## Architecture
-![Gatus ECS Architecture](images/architecture.png)
+<p align="center">
+  <img src="images/architecture.png" alt="Gatus ECS Architecture" height="400">
+</p>
 
 
 High-level traffic flow:
