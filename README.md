@@ -1,68 +1,57 @@
-Gatus ECS Project
-Table of Contents
+# Gatus ECS Project
 
-Project Overview
+## Table of Contents
+1. [Project Overview](#project-overview)  
+2. [Architecture](#architecture)  
+3. [Folder Structure](#folder-structure)  
+4. [Infrastructure](#infrastructure)  
+5. [Application](#application)  
+6. [Deployment](#deployment)  
+7. [Environment Variables / Configuration](#environment-variables--configuration)  
+8. [Contributing](#contributing)  
 
-Architecture
+---
 
-Folder Structure
+## Project Overview
+This project deploys **Gatus**, a service monitoring tool, on **AWS ECS Fargate** using **Terraform**.  
 
-Infrastructure
+Key features:  
+- Containerized deployment using **Docker**  
+- ECS Fargate for serverless container execution  
+- Public-facing **ALB** routing to ECS tasks  
+- Infrastructure as code via **Terraform modules**  
+- CI/CD pipeline with **GitHub Actions**  
+- Infrastructure includes **VPC, ALB, ECS, ACM, ECR, Security Groups, IAM, Route 53**  
 
-Application
+---
 
-Deployment
-
-Environment Variables / Configuration
-
-Contributing
-
-Project Overview
-
-This project deploys Gatus, a service monitoring tool, on AWS ECS Fargate using Terraform.
-
-Key features:
-
-Containerised deployment using Docker
-
-ECS Fargate for serverless container execution
-
-Public ALB routing to ECS tasks
-
-Infrastructure as code via Terraform modules
-
-CI/CD pipeline with GitHub Actions
-
-Components include VPC, ALB, ECS, ACM, ECR, Security Groups, IAM, Route 53
-
-Architecture
-
+## Architecture
 High-level traffic flow:
 
-[Internet] → [ALB] → [ECS Tasks / Containers] → [Services monitored by Gatus]
 
+- **ALB**: Public-facing load balancer for routing traffic  
+- **ECS Tasks**: Runs Gatus container in private subnets  
+- **NAT Gateway**: Provides outbound internet access for ECS tasks  
+- **Route 53**: Manages DNS records pointing domain/subdomain to ALB  
+- **Terraform Modules**: Modular, reusable infrastructure for maintainability  
 
-ALB: Public-facing load balancer
+---
 
-ECS Tasks: Runs Gatus container in private subnets
+## Folder Structure
 
-NAT Gateway: Provides outbound internet access for ECS tasks
-
-Route 53: Manages DNS records for domain/subdomain
-
-Terraform Modules: Modular infrastructure for maintainability
-
-Folder Structure
+```text
 gatus-ecs-project/
 ├── app/
-│   ├── Dockerfile         # Dockerfile for Gatus container
-│   ├── config.yml         # Gatus service monitoring config
-│   └── main.go            # Entry point for any custom app logic
+│   ├── Dockerfile
+│   ├── config.yaml         
+│   ├── go.mod
+│   ├── go.sum        
+│   └── main.go           
 │
 ├── infra/
-│   ├── main.tf            # Root Terraform configuration
-│   ├── variables.tf       # Root variables
-│   ├── provider.tf        # Provider configuration (AWS)
+│   ├── main.tf            
+│   ├── variables.tf       
+│   ├── provider.tf        
 │   └── modules/
 │       ├── vpc/
 │       │   ├── main.tf
@@ -99,84 +88,6 @@ gatus-ecs-project/
 │
 └── .github/
     └── workflows/
-        ├── ci.yaml          # CI: build Docker, scan, push to ECR
-        └── cd.yaml          # CD: Terraform apply, update ECS tasks
+        ├── ci.yml          # CI: build Docker, scan, push to ECR
+        ├── cd.yml          # CD: Terraform apply, update ECS tasks
         └── manual-destroy.yml
-
-Infrastructure
-Terraform Modules
-
-VPC: Creates public/private subnets, route tables, NAT Gateway
-
-ALB: Configures Application Load Balancer, listener, target groups
-
-ECS: ECS cluster, service, task definitions
-
-ACM: SSL/TLS certificate for secure HTTPS
-
-ECR: Docker image repository
-
-Security Groups: Manages access for ALB and ECS tasks
-
-IAM: ECS task execution roles, service roles
-
-Route 53: DNS records pointing domain/subdomain to ALB
-
-Terraform modules allow for modular, reusable, and maintainable infrastructure.
-
-Application
-
-Dockerfile: Builds the Gatus container
-
-config.yml: Configures which services to monitor
-
-main.go: Custom application logic (if needed)
-
-Docker images are built and pushed to ECR using GitHub Actions, with commit SHA tags for versioning.
-
-Deployment
-CI/CD Pipeline
-
-CI Workflow (ci.yaml)
-
-Checks out code
-
-Builds Docker image from /app
-
-Scans image for vulnerabilities
-
-Pushes Docker image to ECR
-
-CD Workflow (cd.yaml)
-
-Runs Terraform plan and apply
-
-Updates ECS service with the new image tag (commit SHA)
-
-Performs zero-downtime deployments via ECS Fargate
-
-Manual Terraform Commands
-cd infra
-terraform init
-terraform plan
-terraform apply -auto-approve
-
-Environment Variables / Configuration
-
-TF_VAR_gatus_image_tag: Docker image tag for ECS service
-
-AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY: AWS credentials
-
-ECR_REPO: Name of ECR repository
-
-Contributing
-
-Fork the repository
-
-Make changes in /app or /infra
-
-Push changes to a feature branch
-
-Submit a pull request for review
-
-CI/CD workflows handle Docker build, image push, and ECS deployment
