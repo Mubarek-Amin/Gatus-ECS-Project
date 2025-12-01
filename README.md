@@ -26,8 +26,10 @@ Key features:
 ---
 
 ## Architecture
-High-level traffic flow:
+![Gatus ECS Architecture](images/architecture.png)
 
+
+High-level traffic flow:
 
 - **ALB**: Public-facing load balancer for routing traffic  
 - **ECS Tasks**: Runs Gatus container in private subnets  
@@ -91,3 +93,54 @@ gatus-ecs-project/
         ├── ci.yml          # CI: build Docker, scan, push to ECR
         ├── cd.yml          # CD: Terraform apply, update ECS tasks
         └── manual-destroy.yml
+
+```
+---
+
+## Infrastructure
+### Terraform Modules
+- **VPC**: Public/private subnets, route tables, NAT Gateway  
+- **ALB**: Application Load Balancer, listeners, target groups  
+- **ECS**: Cluster, services, and task definitions  
+- **ACM**: SSL/TLS certificate management  
+- **ECR**: Docker image repository  
+- **Security Groups**: Access management for ALB and ECS tasks  
+- **IAM**: ECS execution/service roles  
+- **Route 53**: DNS records for domain/subdomain  
+
+Modules allow modular, reusable, and maintainable infrastructure.
+
+---
+
+## Application
+- **Dockerfile**: Builds the Gatus container  
+- **config.yaml**: Service monitoring configuration  
+- **main.go**: Entry point for custom logic if needed  
+- **go.mod / go.sum**: Go module dependencies  
+
+Docker images are built and pushed to **ECR** using GitHub Actions, with commit SHA tags for versioning.
+
+---
+
+## Deployment
+### CI/CD Pipeline
+**CI Workflow (`ci.yml`)**
+1. Checks out code  
+2. Builds Docker image from `/app`  
+3. Scans image for vulnerabilities  
+4. Pushes Docker image to **ECR**
+
+**CD Workflow (`cd.yml`)**
+1. Runs Terraform `plan` and `apply`  
+2. Updates ECS service with new Docker image (commit SHA)  
+3. Performs zero-downtime deployments via ECS Fargate  
+
+**Optional: Manual Destroy (`manual-destroy.yml`)**
+- Allows you to destroy resources safely if needed  
+
+### Manual Terraform Commands
+```bash
+cd infra
+terraform init
+terraform plan
+terraform apply -auto-approve
