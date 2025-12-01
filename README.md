@@ -144,3 +144,34 @@ cd infra
 terraform init
 terraform plan
 terraform apply -auto-approve
+
+```
+
+
+### Running Locally
+
+You can run Gatus locally using Docker to test your configuration before deploying to AWS:
+
+1. **Build the Docker image**
+
+```bash
+cd app
+docker build -t gatus-local:latest .
+
+```
+
+2. **Run Container**
+
+```bash
+docker run -d -p 8080:8080 gatus-local:latest
+
+```
+3. **Test Locally**
+
+```bash
+curl http://localhost:8080/health
+```
+You should see:
+
+{"status":"UP"}% 
+
