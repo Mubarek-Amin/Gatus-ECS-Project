@@ -6,7 +6,7 @@ COPY . .
 
 RUN go mod download 
 
-#static binary(c dependenies disabled), ensure linux executable ,building main go file and tagging with name = gatus
+#disables c dependencies, ensures linux executable ,outputting go binary and tagging with name = gatus
 RUN CGO_ENABLED=0 GOOS=linux go build -o gatus main.go
 
 FROM scratch
