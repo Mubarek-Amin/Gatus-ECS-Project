@@ -7,8 +7,8 @@
 4. [Infrastructure](#infrastructure)  
 5. [Application](#application)  
 6. [Deployment](#deployment)  
-7. [Environment Variables / Configuration](#environment-variables--configuration)  
-8. [Contributing](#contributing)  
+7. [Testing](#running-locally)  
+  
 
 ---
 
