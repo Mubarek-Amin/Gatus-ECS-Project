@@ -27,7 +27,7 @@ Key features:
 
 ## Architecture
 <p align="center">
-  <img src="images/architecture.png" alt="Gatus ECS Architecture" height="400">
+  <img src="images/architecture.png" alt="Gatus ECS Architecture" height="500" width="400">
 </p>
 
 
